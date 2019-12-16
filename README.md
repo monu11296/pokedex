@@ -1,6 +1,6 @@
 ## To run backend
 
-> ``` cd backend/python
+> ``` cd backend/python```
 
 > ```sudo apt install python3```
 
