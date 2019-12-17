@@ -39,14 +39,35 @@ const Main: React.FC = () => {
 
     let [lastOrder, setLastOrder]: any = useState({})
 
+
+    const get_exisiting_order = () => {
+        apiCall('get_order', 'get').then(resp => {
+            if (resp.length > 0) {
+                resp.forEach((order: any) => {
+                    if (!navItems.includes(order.category)) {
+                        navItems.push(order.category)
+                        let poke_order = order.pokemon_order.split(',').map(Number);
+                        pokemonCategories = {
+                            ...pokemonCategories,
+                            [order.category]: poke_order
+                        }
+                    }
+                })
+                console.log(navItems, pokemonCategories)
+                setNavItems(navItems)
+                setPokemonCategories(pokemonCategories)
+            }
+        })
+    }
+
+
     useEffect(() => {
 
         apiCall('get_pokemons', 'get').then(resp => {
-
             setAllPokemons(resp)
             pokedex = resp
-
         })
+        get_exisiting_order()
     }, [])
 
     const searchOnChange = (e: any) => {
@@ -96,6 +117,11 @@ const Main: React.FC = () => {
 
 
     const deleteCategory = (catName: any) => {
+
+        apiCall('delete_category', 'post', { "category": catName }).then(resp => {
+            alert(JSON.stringify(resp))
+        })
+
         delete pokemonCategories[catName]
         setCurrentNavItem("All")
 
@@ -143,6 +169,17 @@ const Main: React.FC = () => {
         setPokemonCategories({
             ...pokemonCategories,
             [item]: lastOrder[item]
+        })
+    }
+
+    const saveOrder = (item: any) => {
+        console.log(pokemonCategories[currentNavItem])
+        let data = JSON.stringify({
+            "category": item,
+            "pokemon_list": pokemonCategories[item]
+        })
+        apiCall('save_order', 'post', data ).then(resp => {
+            alert(JSON.stringify(resp))
         })
     }
 
@@ -231,6 +268,13 @@ const Main: React.FC = () => {
                             >
                                 Undo Reorder
                             </Button>
+
+                            <Button
+                                className="mt-2 mb-2" variant="primary"
+                                onClick={() => saveOrder(item)}
+                            >
+                                Save Order
+                            </Button>
                         </div>
                     </div>
                     <div>
@@ -260,7 +304,7 @@ const Main: React.FC = () => {
                                                                             )
                                                                     })}
                                                                 </Card.Title>
-                                                                
+
                                                             </Card>
                                                         }
                                                     </div>

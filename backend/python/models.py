@@ -27,3 +27,13 @@ class Pokedex(Base):
     slug = Column(String, nullable=False)
     abilities0 = Column(String, nullable=True)
     abilities1 = Column(String, nullable=True)
+
+
+
+class Pokemon_Ordering(Base):
+    __tablename__ = "pokemon_ordering"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    category = Column(String, nullable=False)
+    pokemon_order = Column(String, nullable=False)
+    row_status = Column(String, nullable=False)

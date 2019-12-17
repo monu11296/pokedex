@@ -1,7 +1,6 @@
-from typing import List
+from typing import List, Dict
 
 from pydantic import BaseModel
-
 
 class Pokedex(BaseModel):
     id: int
@@ -26,5 +25,19 @@ class Pokedex(BaseModel):
     abilities0 : str = None
     abilities1 : str = None
     
+    class Config:
+        orm_mode = True
+
+class Save_Order(BaseModel):
+    pokemon_list: list
+    category: str
+
+    class Config:
+        orm_mode = True
+
+
+class Delete_Category(BaseModel):
+    category: str
+
     class Config:
         orm_mode = True

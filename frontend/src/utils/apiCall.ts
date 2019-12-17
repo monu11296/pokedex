@@ -19,14 +19,6 @@ export const apiCall = async (
         url: endpoint,
         data: body,
         params: method.toLowerCase() === 'get' ? body : null,
-        transformRequest: (data: any) => {
-            if (Object.prototype.toString.call(data) === '[object FormData]') {
-                return data
-            }
-            if (Object.prototype.toString.call(data) === '[object Array]') {
-                return JSON.stringify(data)
-            }
-        },
         headers
     })
         .then(response => response.data)
