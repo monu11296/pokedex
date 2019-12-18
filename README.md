@@ -18,6 +18,10 @@ Install dependencies
 
 > ```pip3 install -r requirements.txt```
 
+Start App
+
+> ```uvicorn main:app --reload```
+
 
 ## To run frontend
 
